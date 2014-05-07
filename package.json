@@ -1,0 +1,14 @@
+{
+  "name": "url_generator",
+  "version": "0.0.0",
+  "description": "a thing to create url generators from schemas",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --reporter spec --ui tdd test/*.js"
+  },
+  "dependencies": {
+    "PDL": "git+https://github.com/SQUARE-WAVES/PDL.git"
+  },
+  "author": "Mike B",
+  "license": "internal"
+}
