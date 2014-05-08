@@ -1,5 +1,5 @@
 {
-  "name": "url_generator",
+  "name": "urlgen",
   "version": "0.0.0",
   "description": "a thing to create url generators from schemas",
   "main": "index.js",
@@ -10,5 +10,8 @@
     "PDL": "git+https://github.com/SQUARE-WAVES/PDL.git"
   },
   "author": "Mike B",
-  "license": "internal"
+  "license": "internal",
+  "devDependencies": {
+    "mocha": "^1.18.2"
+  }
 }
