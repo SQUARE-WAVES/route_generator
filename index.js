@@ -1,4 +1,4 @@
-var helpers = require('PDL');
+var helpers = require('pdl');
 
 var generatorFromSchema = function(schema){
 	var pathData = helpers.createPathData(schema);
