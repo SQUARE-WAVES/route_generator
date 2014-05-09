@@ -24,7 +24,6 @@ suite('test the schema generators', function () {
 			'path': '/hello/:name',
 			'params': {
 				'name': {
-					'type': 'path',
 					'values': [
 						'charles',
 						'barnabus'
@@ -68,7 +67,7 @@ suite('test the schema generators', function () {
 
 	test('parameterized route with required splat', function () {
 		var schema = {
-			'path': '/hello/:name/+extra',
+			'path': '/hello/:name/*extra',
 			'params': {
 				'name': {
 					'type': 'path',
@@ -88,7 +87,7 @@ suite('test the schema generators', function () {
 
 	test('parameterized route with optional splat', function () {
 		var schema = {
-			'path': '/hello/:name/*extra',
+			'path': '/hello/:name/*extra?',
 			'params': {
 				'name': {
 					'type': 'path',

@@ -1,11 +1,11 @@
-var helpers = require('pdl');
+var pdl = require('pdl');
 
 var generatorFromSchema = function(schema){
-	var pathData = helpers.createPathData(schema);
+	var pathData = pdl.compilePath(schema);
 
 	return function(params){
 		var path = [];
-
+		
 		pathData.forEach(function(item){
 			if(item.name){
 				var val = params[item.name];
