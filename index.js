@@ -31,8 +31,14 @@ var generatorFromSchema = function (schema) {
 			}
 		});
 
-		return url.parse('/' + path.join('/'));
+		return '/' + path.join('/');
 	}
 }
 
-module.exports = generatorFromSchema;
+module.exports = function (schema) {
+	var gen = generatorFromSchema(schema);
+
+	return function (params) {
+		return url.parse(gen(params));
+	};
+}
