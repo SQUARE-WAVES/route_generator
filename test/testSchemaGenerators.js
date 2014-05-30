@@ -1,6 +1,7 @@
 var assert = require('assert');
 var url = require('url');
 var createGenerator = require('../index.js');
+var _ = require('lodash');
 
 // returns a function which executes a generator when called. necessary for use with assert.throws
 var runGenerator = function(gen, params){
@@ -8,6 +9,24 @@ var runGenerator = function(gen, params){
 		gen.format(params);
 	}
 }
+
+var getSimpleSchema = function () {
+	return {
+		path: '/dogs'
+	};
+}
+
+var getParameterizedSchema = function () {
+	return {
+		path: '/dogs/:cats'
+	};
+}
+
+var getSplatSchema = function () {
+	return {
+		path: '/dogs/*cats'
+	}
+};
 
 suite('test the schema generators', function () {
 	test('unparameterized route', function () {
@@ -248,6 +267,96 @@ suite('test the schema generators', function () {
 
 			assert.equal(gen.format({cats: 'dumb@cats.dogs'}), '/dogs?cats=dumb%40cats.dogs');
 			assert.equal(gen.format({'sneaky$cats': 'dumb@cats.dogs'}), '/dogs?sneaky%24cats=dumb%40cats.dogs');
+		});
+	});
+
+	suite('error conditions', function () {
+		test('path param does not match regex', function () {
+			var schema = getParameterizedSchema();
+			schema.params = {
+				cats: {
+					regex: '\\d\\d\\d\\d\\d'
+				}
+			};
+
+			var gen = createGenerator(schema);
+
+			assert.doesNotThrow(runGenerator(gen, {cats: '12345'}));
+			assert.throws(runGenerator(gen, {cats: 1}));
+		});
+
+		test('path param does not match values', function () {
+			var schema = getParameterizedSchema();
+			schema.params = {
+				cats: {
+					values: ['garfield', 'turbo', 'cat stevens']
+				}
+			};
+
+			var gen = createGenerator(schema);
+
+			assert.doesNotThrow(runGenerator(gen, {cats: 'garfield'}));
+			assert.throws(runGenerator(gen, {cats: 'hodor'}));
+		});
+		
+		test('querystring param does not match regex');
+		test('querystring param does not match regex');
+	});
+
+	suite('absolute urls can be generated', function () {
+		var simpleSchema = {
+			'path': '/dogs',
+			'protocol': 'http:',
+			'hostname': 'dogs.com',
+			'port': '1234',
+			'query': {
+				cats: 'sure',
+				mice: 'whynot'
+			},
+			'hash': 'supercats'
+		};
+
+		var parameterizedSchema = _.cloneDeep(simpleSchema);
+		parameterizedSchema.path = '/dogs/:id';
+
+		var splatSchema = _.cloneDeep(simpleSchema);
+		splatSchema.path = '/dogs/*stuff';
+
+		test('url object contains defaults', function () {
+			var gen = createGenerator(simpleSchema);
+			var urlObj = gen.getUrlObject();
+
+			assert.equal(urlObj.path, '/dogs');
+			assert.equal(urlObj.protocol, simpleSchema.protocol);
+			assert.equal(urlObj.hostname, simpleSchema.hostname);
+			assert.equal(urlObj.port, simpleSchema.port);
+			assert.deepEqual(urlObj.query, simpleSchema.query);
+			assert.equal(urlObj.hash, simpleSchema.hash);
+		});
+
+		test('formatted url contains defaults', function () {
+			var gen = createGenerator(simpleSchema);
+
+			assert.equal(gen.format(), 'http://dogs.com:1234/dogs?cats=sure&mice=whynot#supercats');
+		});
+
+		test('query params replace default query', function () {
+			var gen = createGenerator(simpleSchema);
+
+			assert.equal(gen.format({test: 'test'}), 'http://dogs.com:1234/dogs?test=test#supercats');
+		});
+
+		test('parameterized paths work', function () {
+			var gen = createGenerator(parameterizedSchema);
+
+			assert.equal(gen.format({id: '1'}), 'http://dogs.com:1234/dogs/1?cats=sure&mice=whynot#supercats');
+		});
+
+
+		test('splat paths work', function () {
+			var gen = createGenerator(splatSchema);
+
+			assert.equal(gen.format({stuff: ['things','stuff']}), 'http://dogs.com:1234/dogs/things/stuff?cats=sure&mice=whynot#supercats')
 		});
 	});
 });
