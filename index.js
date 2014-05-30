@@ -18,7 +18,7 @@ module.exports = function (schema) {
 		
 		// set defaults. can't use _.defaults as it counts null values as set
 		_.each(urlDefaults, function (v, k) {
-			if (urlObj[k] === null) {
+			if (urlObj[k] === null || urlObj[k] === undefined) {
 				urlObj[k] = _.clone(v);
 			}
 		});
