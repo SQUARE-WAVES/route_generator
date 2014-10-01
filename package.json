@@ -7,8 +7,8 @@
     "test": "mocha --reporter spec --ui tdd test/*.js"
   },
   "dependencies": {
-    "PDL": "git+https://github.com/SQUARE-WAVES/PDL.git",
-    "lodash": "^2.4.1"
+    "lodash": "^2.4.1",
+    "path_description_language": "^1.1.0"
   },
   "author": "Mike B",
   "license": "internal",
