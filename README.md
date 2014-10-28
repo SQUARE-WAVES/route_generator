@@ -28,7 +28,7 @@ var schema = {
 		}
 	}, 
 	'queryDescription': {
-		'isStrict':'false'
+		'isStrict':false,
 		'params':{
 			'spayed':{
 				'values':[true,false]
@@ -138,7 +138,7 @@ gen.format({"horses":true,"count":55,"with-cheese":false});
 
 you would get an excpetion telling you that "with-cheese" isn't a valid query parameter.
 
-#anythign else I should know?
+#anything else I should know?
 
 right now query parameters are always optional, you are never required to give them. as well. URLS are automatically url-escaped, but no other escaping is done.
 
