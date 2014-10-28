@@ -1,6 +1,6 @@
 {
   "name": "warpath",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "a thing to create url generators from schemas",
   "main": "index.js",
   "scripts": {
