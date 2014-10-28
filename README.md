@@ -140,6 +140,21 @@ you would get an excpetion telling you that "with-cheese" isn't a valid query pa
 
 #anything else I should know?
 
-right now query parameters are always optional, you are never required to give them. as well. URLS are automatically url-escaped, but no other escaping is done.
+right now query parameters are always optional, you are never required to give them. as well. URLS are automatically url-escaped, but no other escaping is done. When putting in values for a splat parameter you can either put in a string, which represents the entire path or an array of individual tokens which will be joined together to form the final path. like so:
+
+```javascript
+var schema= {
+	"pathDescription":"/splat/*whatever"
+}
+
+var gen = createGenerator(schema);
+
+var singleString = gen.format({"whatever":"/cats/bats/rats"});
+var arrayOfStrings = gen.format({"whatever":['gems','and','jewels']});
+```
+
+singleString will equal "/slpat/cats/bats/rats" and arrayOfStrings will equal "/splat/gems/and/jewels." The case where this is important is when you need to have tokens in the splat which contain the url encoded charachter '/' In that case, you must use an array.
+
+
 
 
