@@ -17,6 +17,6 @@
   "author": "Mike B",
   "license": "MIT",
   "devDependencies": {
-    "mocha": "^5.2.0",
+    "mocha": "^5.2.0"
   }
 }
